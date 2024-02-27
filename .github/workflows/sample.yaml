@@ -7,17 +7,25 @@ on:
   workflow_dispatch:
 
 jobs:
-  numpy-test:
+  build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Setup Python
-        uses: actions/setup-python@v2
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - name: Set up Python environment
+        uses: actions/setup-python@v4
         with:
-          python-version: '3.8'
-          architecture: 'x64'
+          python-version: 3.11
+      - name: Cache pip dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
       - name: Install dependencies
-        run: pip install -r requirements.txt
-      - name: Run Python
-        run: python sample.py
-        
+        run: |
+          pip install get-chrome-driver --upgrade
+          pip install -r requirements.txt
+      - name: Run Python script
+        run: src/200_電力・ガス基本政策小委員会.py
