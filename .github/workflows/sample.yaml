@@ -28,4 +28,4 @@ jobs:
           pip install get-chrome-driver --upgrade
           pip install -r requirements.txt
       - name: Run Python script
-        run: 200_電力・ガス基本政策小委員会.py
+        run: test_code.py
